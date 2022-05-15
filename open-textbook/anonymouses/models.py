@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 from django.conf import settings
 from datetime import datetime, timedelta, timezone
@@ -8,8 +9,9 @@ class Anonymous(models.Model):
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_anonymouses')
     title = models.CharField(max_length=20)
     view_cnt = models.IntegerField(default=0)
-    content = models.TextField()
+    content = RichTextField(blank=True , null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    comment_idx = models.IntegerField(default=0)
 
     @property
     def created_string(self):
@@ -29,6 +31,7 @@ class Anonymous(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='an_comments')
+    nickname = models.CharField(max_length=10)
     anonymous = models.ForeignKey(Anonymous, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_comments')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -50,4 +53,4 @@ class Comment(models.Model):
             else:
                 return self.created_at.date
     def __str__(self):
-        return self.title
+        return self.content

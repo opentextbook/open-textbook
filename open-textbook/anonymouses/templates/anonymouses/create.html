@@ -1,0 +1,31 @@
+{% extends 'anonymous_base.html' %}
+
+{% block subtitle %}
+  익명게시판
+{% endblock subtitle %}
+
+{% block detail %}
+<form action="" method="POST">
+  {% csrf_token %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><p class="fs-5 fw-bold my-1">새 글 생성</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th> {{ article_form.title }}  </th>
+      </tr>
+      <tr>        
+        <th>{{ article_form.media }}
+          {{ article_form.content | safe }}</th>
+      </tr>
+    </tbody>
+  </table>
+  <div "float-right py-3">
+    <button type='submit' class='btn btn-dark'>생성</button>
+    <button type='reset' class='btn text-decoration-underline'>취소</button>
+  </div>
+</form>
+{% endblock detail %}
